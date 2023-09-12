@@ -1,12 +1,14 @@
 // Create Dino Constructor
 
-function Dino() {
-  this.species = species;
-  this.weight = weight;
-  this.diet = diet;
-  this.where = where;
-  this.when = when;
-  this.fact = fact;
+class Dino {
+  constructor(species, weight, diet, where, when, fact) {
+    this.species = species;
+    this.weight = weight;
+    this.diet = diet;
+    this.where = where;
+    this.when = when;
+    this.fact = fact;
+  }
 }
 
 // Create Dino Objects
@@ -65,7 +67,7 @@ const Elasmosaurus = new Dino(
   "Late Cretaceous",
   "Elasmosaurus was a marine reptile first discovered in Kansas."
 );
-const Pteranodon = new Dino(
+const pteranodon = new Dino(
   "Pteranodon",
   44,
   20,
@@ -74,11 +76,30 @@ const Pteranodon = new Dino(
   "Late Cretaceous",
   "Actually a flying reptile, the Pteranodon is not a dinosaur."
 );
-const Pigeon = new Dino();
+const pigeon = new Dino(
+  "Pigeon",
+  0.5,
+  9,
+  "herbavor",
+  "World Wide",
+  "Holocene",
+  "All birds are living dinosaurs."
+);
+
+let dinos = [
+  triceratops,
+  tyrannosaurusRex,
+  Anklyosaurus,
+  Brachiosaurus,
+  Stegosaurus,
+  Elasmosaurus,
+  pteranodon,
+  pigeon,
+];
 
 // Create Human Object
 
-function Human() {
+function Human(hisName, height, weight, diet) {
   this.hisName = hisName;
   this.height = height;
   this.weight = weight;
@@ -86,9 +107,55 @@ function Human() {
 }
 
 // Use IIFE to get human data from form
+// Question: Why cant i add a height object to my inner return function??
+// height = {Feet:formFeet.value, Inches: formInches.value}
+
+const button = document.getElementById("btn");
+const person = button.addEventListener(
+  "click",
+  (function () {
+    const form = document.getElementById("dino-compare");
+    const formName = form.elements["name"];
+
+    const formFeet = document.getElementById("feet");
+    const formInches = document.getElementById("inches");
+
+    const formWeight = document.getElementById("weight");
+    const formDiet = document.getElementById("diet");
+
+    return function () {
+      const newHuman = new Human(
+        formName.value,
+        { Feet: formFeet.value, Inches: formInches.value },
+        formWeight.value,
+        formDiet.value
+      );
+    };
+  })()
+);
 
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches.
+
+Dino.prototype.compareWeight = (person) => {
+  let fact;
+
+  // skip the Pigeon dino from updating
+  for (let i = 0; i < dinos.length - 1; i++) {
+    const dino = dinos[i];
+    if (dino.weight > human.weight) {
+      fact = `${dino.species} is heavier than you by ${
+        dino.weight - human.weight
+      } lbs`;
+      dino.fact.push(fact);
+    } else {
+      fact = `You are heavier than ${dino.species} by ${
+        person.weight - dino.weight
+      } lbs`;
+      dino.fact.push(fact);
+    }
+  }
+};
 
 // Create Dino Compare Method 2
 // NOTE: Weight in JSON file is in lbs, height in inches.
